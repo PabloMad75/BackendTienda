@@ -3,6 +3,7 @@ import productsRouter from './routes/products.routes.js'
 import orderstatusesRouter from './routes/orderstatuses.routes.js'
 import categoriesRouter from './routes/categories.routes.js'
 import usersRouter from './routes/user.routes.js'
+import ordersRouter from './routes/orders.routes.js'
 
 import dotenv from "dotenv";
 import { db } from "./config/db.config.js";
@@ -20,6 +21,7 @@ app.use('/api/v1', productsRouter);
 app.use('/api/v1', orderstatusesRouter);
 app.use('/api/v1', usersRouter);
 app.use('/api/v1', categoriesRouter);
+app.use('/api/v1', ordersRouter);
 
 // Ruta de inicio
 app.get("/", (req, res) => {

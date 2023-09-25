@@ -30,6 +30,6 @@ const userSchema = new mongoose.Schema({
   orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Orders' }]
 }, {versionKey:false});
 
-const Users = mongoose.model('Users', userSchema);
+const Users = mongoose.model('users', userSchema);
 
 export default Users;
