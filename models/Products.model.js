@@ -10,8 +10,8 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  image: String, // Nueva clave "image" para la URL de la imagen del producto
-  category: { type: mongoose.Schema.Types.ObjectId, ref: 'Categories' }
+  category: { type: mongoose.Schema.Types.ObjectId, ref: 'Categories' },
+  image: String // Nueva clave "image" para la URL de la imagen del producto
 }, {versionKey:false});
 
 const Products = mongoose.model('Products', productSchema);
