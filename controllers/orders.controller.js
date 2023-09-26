@@ -2,14 +2,13 @@ import Orders from "../models/Orders.model.js";
 
 export const getAllOrders = async (req, res) => {
   try {
-    const AllOrders = await Orders.find();
-    console.log(AllOrders);
-    res.status(200).json(AllOrders);
+    const allOrders = await Orders.find().populate('user').populate('products');
+    res.status(200).json(allOrders);
   } catch (error) {
-    res.status(400).json({ message: "No se encontro nada " });
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener las órdenes' });
   }
 };
-
 
 export const createOrders = async (req, res) => {
   try {

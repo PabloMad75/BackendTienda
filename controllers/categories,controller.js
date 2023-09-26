@@ -27,3 +27,56 @@ export const createCategory = async (req, res) => {
       .json({ message: `El registro No se logró grabar con éxito` });
   }
 };
+
+// Buscar categoría por nombre
+export const getCategoryByName = async (req, res) => {
+  try {
+    const categoryName = req.params.name; // Obtener el nombre desde los parámetros
+    const category = await Categories.findOne({ name: categoryName });
+
+    if (!category) {
+      return res.status(404).json({ message: 'Categoría no encontrada' });
+    }
+
+    res.status(200).json(category);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al buscar la categoría por nombre' });
+  }
+};
+
+// Actualizar categoría por nombre
+export const updateCategoryByName = async (req, res) => {
+  try {
+    const categoryName = req.params.name;
+    const updateData = req.body;
+    const updatedCategory = await Categories.findOneAndUpdate(
+      { name: categoryName },
+      updateData,
+      { new: true }
+    );
+
+    if (!updatedCategory) {
+      return res.status(404).json({ message: 'Categoría no encontrada' });
+    }
+
+    res.status(202).json({ message: `Categoría ${updatedCategory.name} actualizada con éxito` });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al actualizar la categoría por nombre' });
+  }
+};
+
+// Eliminar categoría por nombre
+export const deleteCategoryByName = async (req, res) => {
+  try {
+    const categoryName = req.params.name;
+    const removedCategory = await Categories.findOneAndDelete({ name: categoryName });
+
+    if (!removedCategory) {
+      return res.status(404).json({ message: 'Categoría no encontrada' });
+    }
+
+    res.status(202).json({ message: `Categoría ${removedCategory.name} eliminada con éxito` });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al eliminar la categoría por nombre' });
+  }
+};
