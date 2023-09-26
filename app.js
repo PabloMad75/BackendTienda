@@ -1,9 +1,9 @@
 import express from "express";
-import productsRouter from './routes/products.routes.js'
-import orderstatusesRouter from './routes/orderstatuses.routes.js'
-import categoriesRouter from './routes/categories.routes.js'
-import usersRouter from './routes/user.routes.js'
-import ordersRouter from './routes/orders.routes.js'
+import productsRouter from "./routes/products.routes.js";
+import orderstatusesRouter from "./routes/orderstatuses.routes.js";
+import categoriesRouter from "./routes/categories.routes.js";
+import usersRouter from "./routes/user.routes.js";
+import ordersRouter from "./routes/orders.routes.js";
 
 import dotenv from "dotenv";
 import { db } from "./config/db.config.js";
@@ -17,18 +17,21 @@ const port = process.env.PORT || 3000; // Utiliza 3000 como valor predeterminado
 // Middlewares
 app.use(express.json()); // Permite el uso de JSON en las solicitudes
 app.use(express.urlencoded({ extended: true })); // Analiza las solicitudes con contenido de tipo 'application/x-www-form-urlencoded'
-app.use('/api/v1', productsRouter);
-app.use('/api/v1', orderstatusesRouter);
-app.use('/api/v1', usersRouter);
-app.use('/api/v1', categoriesRouter);
-app.use('/api/v1', ordersRouter);
+app.use("/api/v1", productsRouter);
+app.use("/api/v1", orderstatusesRouter);
+app.use("/api/v1", usersRouter);
+app.use("/api/v1", categoriesRouter);
+app.use("/api/v1", ordersRouter);
 
-// Ruta de inicio
-app.get("/", (req, res) => {
-  res.send("¡Hola, mundo!"); // Responde con un mensaje de saludo en la ruta raíz
+// Middleware para manejar rutas no encontradas
+app.use((req, res, next) => {
+  res.status(404).json({ message: "Ruta no encontrada", status: 404 });
 });
 
-
+// Ruta de inicio
+// app.get("/", (req, res) => {
+//   res.send("¡Hola, mundo!"); // Responde con un mensaje de saludo en la ruta raíz
+// });
 
 // Inicia el servidor Express y escucha en el puerto especificado
 app.listen(port, () => {
