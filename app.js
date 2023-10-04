@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import productsRouter from "./routes/products.routes.js";
 import orderstatusesRouter from "./routes/orderstatuses.routes.js";
 import categoriesRouter from "./routes/categories.routes.js";
@@ -13,7 +14,8 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000; // Utiliza 3000 como valor predeterminado si no está definido en las variables de entorno
-
+// Habilitar CORS para todos los dominios
+app.use(cors());
 // Middlewares
 app.use(express.json()); // Permite el uso de JSON en las solicitudes
 app.use(express.urlencoded({ extended: true })); // Analiza las solicitudes con contenido de tipo 'application/x-www-form-urlencoded'
