@@ -72,3 +72,47 @@ export const deleteUserByEmail = async (req, res) => {
       .json({ message: `El registro No se logró eliminar  con éxito` });
   }
 }
+
+
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.params;
+
+    const verifyUserByCorreo = await User.findOne({ emailAddress: email })
+    if (!verifyUserByCorreo) {
+      return res.status(404).json({ message: 'el correo de usuario no existe en nuestra base de datos' })
+    }
+
+    // // const verifyPassword = await bcrypt.compare(password, verifyUserByCorreo.password)
+    // if(!verifyPassword) {
+    //     return res.status(403).json({message: 'La contraseña es incorrecta'})
+    // }
+console.log(`password de front ${password}`)
+console.log(`password del backend ${verifyUserByCorreo.password}`)
+
+    if (password = !verifyUserByCorreo.password) {
+      return res.status(403).json({ message: 'La contraseña es incorrecta' })
+    } else {
+      return res.status(200).json({ message: 'La contraseña es Correcta' })
+    }
+
+    // const expireTime = Math.floor(new Date() / 1000) + 3600
+
+    // const { _id, nombre, apellido, edad } = verifyUserByCorreo
+
+    // const token = jwt.sign({
+    //   exp: expireTime,
+    //   data: {
+    //     id: _id,
+    //     correo: correo,
+    //     nombre: nombre,
+    //     apellido: apellido,
+    //     edad: edad
+    //   }
+    // }, process.env.SECRET_KEY)
+
+    // res.json(token)
+  } catch (error) {
+    res.status(403).json({ message: 'No pudimos verificar tu cuenta' })
+  }
+}
