@@ -30,6 +30,7 @@ export const createUser = async (req, res) => {
     const newUser = req.body;
     const user = new Users(newUser);
     const setUser = await user.save();
+    console.log(req.body)
     res
       .status(201)
       .json({
@@ -38,7 +39,7 @@ export const createUser = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ message: `El registro No se logró grabar con éxito` });
+      .json({ message: `El registro No se logró grabar con éxito ${error.message}` });
   }
 };
 
@@ -76,43 +77,24 @@ export const deleteUserByEmail = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.params;
+    const { email, password } = req.body;
 
-    const verifyUserByCorreo = await User.findOne({ emailAddress: email })
+    const verifyUserByCorreo = await Users.findOne({ emailAddress: email })
     if (!verifyUserByCorreo) {
-      return res.status(404).json({ message: 'el correo de usuario no existe en nuestra base de datos' })
+      return res.status(404).json({ message: `El correo de usuario '${email}' no existe en nuestra base de datos` });
     }
 
-    // // const verifyPassword = await bcrypt.compare(password, verifyUserByCorreo.password)
-    // if(!verifyPassword) {
-    //     return res.status(403).json({message: 'La contraseña es incorrecta'})
-    // }
-console.log(`password de front ${password}`)
-console.log(`password del backend ${verifyUserByCorreo.password}`)
+    console.log(`Contraseña del front: ${password}`);
+    console.log(`Contraseña del backend: ${verifyUserByCorreo.password}`);
 
-    if (password = !verifyUserByCorreo.password) {
-      return res.status(403).json({ message: 'La contraseña es incorrecta' })
+    if (password !== verifyUserByCorreo.password) {
+      return res.status(403).json({ message: 'La contraseña es incorrecta' });
     } else {
-      return res.status(200).json({ message: 'La contraseña es Correcta' })
+      return res.status(200).json({ message: `La contraseña es correcta, bienvenido ${verifyUserByCorreo.firstName}` });
     }
 
-    // const expireTime = Math.floor(new Date() / 1000) + 3600
-
-    // const { _id, nombre, apellido, edad } = verifyUserByCorreo
-
-    // const token = jwt.sign({
-    //   exp: expireTime,
-    //   data: {
-    //     id: _id,
-    //     correo: correo,
-    //     nombre: nombre,
-    //     apellido: apellido,
-    //     edad: edad
-    //   }
-    // }, process.env.SECRET_KEY)
-
-    // res.json(token)
+    // Resto de tu código para generar el token...
   } catch (error) {
-    res.status(403).json({ message: 'No pudimos verificar tu cuenta' })
+    res.status(403).json({ message: `No pudimos verificar tu cuenta debido a un error: ${error.message}` });
   }
 }
