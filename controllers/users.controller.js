@@ -77,13 +77,15 @@ export const deleteUserByEmail = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { emailAddress, password } = req.body;
 
-    const verifyUserByCorreo = await Users.findOne({ emailAddress: email })
+    const verifyUserByCorreo = await Users.findOne({ emailAddress: emailAddress })
     if (!verifyUserByCorreo) {
-      return res.status(404).json({ message: `El correo de usuario '${email}' no existe en nuestra base de datos` });
+      return res.status(404).json({ message: `El correo de usuario '${emailAddress}' no existe en nuestra base de datos` });
     }
 
+    console.log(`Usuario del front: ${emailAddress}`);
+    console.log(`Usuario del backend: ${verifyUserByCorreo.emailAddress}`);
     console.log(`Contraseña del front: ${password}`);
     console.log(`Contraseña del backend: ${verifyUserByCorreo.password}`);
 
