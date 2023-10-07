@@ -26,10 +26,10 @@ export const createProduct = async (req, res) => {
 };
 
 // Buscar producto por nombre
-export const getProductByName = async (req, res) => {
+export const getProductById = async (req, res) => {
   try {
-    const productName = req.params.name; // Obtener el nombre desde los parámetros
-    const product = await Products.findOne({ name: productName });
+    const productId = req.params.product_id; // Obtener el nombre desde los parámetros
+    const product = await Products.findOne({ _id: productId }).populate("category");
 
     if (!product) {
       return res.status(404).json({ message: "Producto no encontrado" });

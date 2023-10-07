@@ -86,14 +86,31 @@ export const login = async (req, res) => {
 
     console.log(`Usuario del front: ${emailAddress}`);
     console.log(`Usuario del backend: ${verifyUserByCorreo.emailAddress}`);
+    console.log(`objeto: ${verifyUserByCorreo}`);
     console.log(`Contraseña del front: ${password}`);
     console.log(`Contraseña del backend: ${verifyUserByCorreo.password}`);
 
     if (password !== verifyUserByCorreo.password) {
       return res.status(403).json({ message: 'La contraseña es incorrecta' });
-    } else {
-      return res.status(200).json({ message: `La contraseña es correcta, bienvenido ${verifyUserByCorreo.firstName}` });
     }
+
+    const {_id, firstName, lastName, address,phoneNumber,role } = verifyUserByCorreo
+
+    const token = {
+      _id,
+      firstName,
+      lastName,
+      emailAddress,
+      password,
+      address,
+      phoneNumber,
+      role:role
+    }
+
+    res.json(token)
+    //  else {
+    //   return res.status(200).json({ message: `La contraseña es correcta, bienvenido ${verifyUserByCorreo.firstName}` });
+    // }
 
     // Resto de tu código para generar el token...
   } catch (error) {
