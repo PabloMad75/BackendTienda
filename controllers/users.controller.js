@@ -45,13 +45,15 @@ export const createUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
-    const userMail = req.params.mail;
+    const userMail = req.body._id;
     const updateData = req.body
-    const updateUser = await Users.findOneAndUpdate({ emailAddress: userMail }, updateData, { new: true })
+    console.log("variable Id backend",userMail)
+    console.log("Body backend",req.body)
+    const updateUser = await Users.findOneAndUpdate({ _id: userMail }, updateData, { new: true })
     if (!updateUser) {
       return res.status(404).json({ message: 'Usuario no encontrado' })
     }
-    res.status(202).json({ message: `Usuario ${updateUser.firstName} ${updateUser.lastName} actualizado con éxito` })
+    res.status(202).json({ updatedUser: updateUser, message: `Usuario ${updateUser.firstName} ${updateUser.lastName} actualizado con éxito` })
   } catch (error) {
     res
       .status(500)
