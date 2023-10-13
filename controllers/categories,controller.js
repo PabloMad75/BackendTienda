@@ -29,10 +29,10 @@ export const createCategory = async (req, res) => {
 };
 
 // Buscar categoría por nombre
-export const getCategoryByName = async (req, res) => {
+export const getCategoryById = async (req, res) => {
   try {
-    const categoryName = req.params.name; // Obtener el nombre desde los parámetros
-    const category = await Categories.findOne({ name: categoryName });
+    const categoryId = req.params.id; // Obtener el nombre desde los parámetros
+    const category = await Categories.findOne({ _id: categoryId });
 
     if (!category) {
       return res.status(404).json({ message: 'Categoría no encontrada' });
