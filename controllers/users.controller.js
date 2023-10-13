@@ -32,11 +32,14 @@ export const createUser = async (req, res) => {
     const user = new Users(newUser);
     const setUser = await user.save();
     console.log(req.body)
+
     res
       .status(201)
       .json({
+        user: setUser, // Agrega los datos del usuario al objeto de respuesta
         message: `Usuario ${setUser.firstName} ${setUser.lastName} fue creado con éxito`,
       });
+      console.log("datos creados valor setUser ",setUser)
   } catch (error) {
     res
       .status(500)
@@ -109,7 +112,7 @@ export const login = async (req, res) => {
       phoneNumber,
       role:role
     }
-
+console.log('valor del token',JSON.stringify(token))
     res.json(token)
     //  else {
     //   return res.status(200).json({ message: `La contraseña es correcta, bienvenido ${verifyUserByCorreo.firstName}` });
