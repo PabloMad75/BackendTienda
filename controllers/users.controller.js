@@ -138,8 +138,14 @@ export const login = async (req, res) => {
     console.log(`Contraseña del front: ${password}`);
     console.log(`Contraseña del backend: ${verifyUserByCorreo.password}`);
 
-    if (password !== verifyUserByCorreo.password) {
-      return res.status(403).json({ message: 'La contraseña es incorrecta' });
+    // if (password !== verifyUserByCorreo.password) {
+    //   return res.status(403).json({ message: 'La contraseña es incorrecta' });
+    // }
+
+    
+    const verifyPassword = await bcrypt.compare(password, verifyUserByCorreo.password)
+    if(!verifyPassword){
+      return res.status(401).json({message:'Contraseña incorrecta'})
     }
 
     const {_id, firstName, lastName, address,phoneNumber,role } = verifyUserByCorreo
