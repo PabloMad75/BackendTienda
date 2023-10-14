@@ -28,11 +28,53 @@ export const getUserByEmail = async (req, res) => {
 
 export const createUser = async (req, res) => {
   try {
-    const newUser = req.body;
-    const user = new Users(newUser);
-    const setUser = await user.save();
-    console.log(req.body)
+    const {
+      firstName,
+      lastName,
+      emailAddress,
+      password,
+      address,
+      phoneNumber,
+      role,
+    } = req.body;
 
+    if (
+      !firstName ||
+      !lastName ||
+      !emailAddress ||
+      !password ||
+      !address ||
+      !phoneNumber
+    ) {
+      console.log(
+        `${(firstName,
+          lastName,
+          emailAddress,
+          password,
+          address,
+          phoneNumber,
+          role)
+        }`
+      );
+      return res
+        .status(400)
+        .json({ message: "Debes rellenar todos los campos" });
+    }
+
+    const passwordEncrypt = await bcrypt.hash(password, 10);
+
+    const user = new Users({
+      firstName: firstName,
+      lastName: lastName,
+      emailAddress: emailAddress,
+      password: passwordEncrypt,
+      address: address,
+      phoneNumber: phoneNumber,
+      role: 'cliente',
+      orders: [],
+    });
+
+    const setUser = await user.save();
     res
       .status(201)
       .json({
