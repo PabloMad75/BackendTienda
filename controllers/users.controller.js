@@ -91,21 +91,50 @@ export const createUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
-    const userMail = req.body._id;
-    const updateData = req.body
-    console.log("variable Id backend",userMail)
-    console.log("Body backend",req.body)
-    const updateUser = await Users.findOneAndUpdate({ _id: userMail }, updateData, { new: true })
+    const {
+      id,
+      firstName,
+      lastName,
+      emailAddress,
+      password,
+      address,
+      phoneNumber,
+      role,
+    } = req.body;
+
+    if (!firstName || !lastName || !emailAddress || !password || !address || !phoneNumber) {
+      return res.status(400).json({ message: "Debes completar todos los campos" });
+    }
+
+    console.log('datos del body',req.body)
+    console.log('valor Id',id)
+    
+    const passwordEncrypt = await bcrypt.hash(password, 10);
+
+    const updateData = new Users({
+      firstName: firstName,
+      lastName: lastName,
+      emailAddress: emailAddress,
+      password: passwordEncrypt,
+      address: address,
+      phoneNumber: phoneNumber,
+      role: 'cliente',
+      orders: [],
+    });
+    
+    console.log('datos del updateData',JSON.stringify(updateData))
+    const updateUser = await Users.findOneAndUpdate({ _id: id }, updateData, { new: true })
+    console.log('datos del updatedUser',JSON.stringify(updateUser))
     if (!updateUser) {
       return res.status(404).json({ message: 'Usuario no encontrado' })
     }
     res.status(202).json({ updatedUser: updateUser, message: `Usuario ${updateUser.firstName} ${updateUser.lastName} actualizado con éxito` })
+
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: `El registro No se logró grabar con éxito` });
+    res.status(500).json({ message: `Falló la actualización` });
   }
-}
+};
+
 
 export const deleteUserByEmail = async (req, res) => {
   try {
